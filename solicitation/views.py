@@ -1,7 +1,11 @@
 from PyQt5.QtWidgets import (
+    QAbstractItemView,
     QHBoxLayout,
     QMainWindow,
-    QWidget,
+    QPushButton,
+    QTableView,
+    QVBoxLayout,
+    QWidget
 )
 
 class Window(QMainWindow):
@@ -13,4 +17,22 @@ class Window(QMainWindow):
         self.setCentralWidget(self.centralWidget)
         self.layout = QHBoxLayout()
         self.centralWidget.setLayout(self.layout)
-       
+        self.setupUI()
+
+    def setupUI(self):
+        self.table = QTableView()
+        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.table.resizeColumnsToContents()
+
+        self.addButton = QPushButton("Add Solicitation")
+        self.deleteButton = QPushButton("Delete Solicitation")
+        self.updateButton = QPushButton("Update Solicitation")
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.addButton)
+        layout.addWidget(self.deleteButton)
+        layout.addWidget(self.updateButton)
+        layout.addStretch()
+        
+        self.layout.addWidget(self.table)
+        self.layout.addLayout(layout)
