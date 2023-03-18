@@ -1,19 +1,23 @@
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery
 
-def _createContactsTable():
+def _createSolicitationTable():
     createTableQuery = QSqlQuery()
     return createTableQuery.exec(
         """
         CREATE TABLE IF NOT EXISTS Solicitation (
-        IdSolicitation INTEGER PRIMARY KEY UNIQUE NOT NULL,
-        Name VARCHAR(40) NOT NULL,
-        SBR? VARCHAR(10),
-        Submission Method VARCHAR(10) NOT NULL,
-        ClosingDate DATE NOT NULL,
-        PlaceOfDelivery VARCHAR(40) NOT NULL,
-        TimeOfDelivery DATE NOT NULL
-        Issuing Agency 
+        IdSolicitation TEXT PRIMARY KEY UNIQUE NOT NULL,
+        Name TEXT NOT NULL,
+        "SBR?" TEXT,
+        SubmissionMethod TEXT NOT NULL,
+        ClosingDate TEXT NOT NULL,
+        PlaceOfDelivery TEXT NOT NULL,
+        TimeOfDelivery TEXT NOT NULL,
+        IssuingAgency TEXT,
+        PoCName TEXT,
+        PoCEmail TEXT,
+        PocPhone TEXT,
+        Comments TEXT
         )
         """
     )
@@ -26,9 +30,10 @@ def createConnection(databaseName):
         QMessageBox.warning(
             None,
             "Solicitation Viewer",
-            f"DB Error: {connection.lastError().text()}"
+            f"DB Error: {connection.lastError().text()}",
         )
 
         return False
     
+    _createSolicitationTable()
     return True
