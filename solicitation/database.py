@@ -34,6 +34,6 @@ def createConnection(databaseName):
         )
 
         return False
-    
+    print("connected!")
     _createSolicitationTable()
     return True

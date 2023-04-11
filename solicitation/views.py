@@ -131,7 +131,7 @@ class AddDialog(QDialog):
 
     def accept(self):
         self.data = []
-        listOfFields = (
+        listOfFields = [
             self.idField,
             self.nameField,
             self.sbrField,
@@ -144,7 +144,7 @@ class AddDialog(QDialog):
             self.pocEmailField,
             self.pocPhoneField,
             self.commentsField
-        )
+        ]
         for field in listOfFields:
             if not field.text():
                 QMessageBox.critical(

@@ -31,14 +31,16 @@ class SolicitationModel:
         return tableModel
     
     def addSolicitation(self, data):
+        print(data)
         rows = self.model.rowCount()
         self.model.insertRows(rows, 1)
         for column, field in enumerate(data):
-            self.model.setData(self.model.index(rows, column + 1), field)
+            print(column)
+            self.model.setData(self.model.index(rows, column), field)
         self.model.submitAll()
         self.model.select()
 
-    def deleteSolicitation(self, row):
+    def deleteSolicitation(self,row):
         self.model.removeRow(row)
         self.model.submitAll()
         self.model.select()
