@@ -15,11 +15,11 @@ class SolicitationModel:
             "IdSolicitation",
             "Name",
             "SBR?",
-            "Submission Method",
+            "Submission \n Method",
             "Closing Date"  ,
-            "Place Of Delivery",
-            "Time Of Delivery",  
-            "Issuing Agency" ,
+            "Place \n of Delivery",
+            "Time \n of Delivery",  
+            "Issuing \n Agency" ,
             "PoC Name",
             "PoC Email",
             "PoC Phone",
@@ -31,11 +31,9 @@ class SolicitationModel:
         return tableModel
     
     def addSolicitation(self, data):
-        print(data)
         rows = self.model.rowCount()
         self.model.insertRows(rows, 1)
         for column, field in enumerate(data):
-            print(column)
             self.model.setData(self.model.index(rows, column), field)
         self.model.submitAll()
         self.model.select()

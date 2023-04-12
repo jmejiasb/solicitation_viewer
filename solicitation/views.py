@@ -1,57 +1,105 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (
-    QAbstractItemView,
-    QDialog,
-    QDialogButtonBox,
-    QFormLayout,
-    QLineEdit,
-    QMessageBox,
-    QHBoxLayout,
-    QMainWindow,
-    QPushButton,
-    QTableView,
-    QVBoxLayout,
-    QWidget
-)
+from PyQt5.QtWidgets import *
 
 from .model import SolicitationModel
 
 class Window(QMainWindow):
+
+    app_style = """
+    QWidget 
+    {
+        background-color: #ffffff;
+        font: sans-serif;
+    }
+
+    QHeaderView::section
+    {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: center;
+        border: 1px solid #17a185
+    }
+
+    QTableView
+    {
+        gridline-color: #e8e8e8
+    }
+
+    QTableView::item:selected
+    {
+        font-weight: bold;
+        color: #009879;
+        background-color: #ffffff;
+        text-color: 009879;
+    }
+
+    QPushButton
+    {
+        outline: 0;
+        border: none;
+        font-weight: 600;
+        border-radius: 4px;
+        font-size: 13px;
+        height: 30px;
+        background-color: #009879;
+        color: white;
+        padding: 0 20px;
+    }
+    
+    QComboBox:hover 
+    {
+    background: #009879;
+    color: #fff;  
+    }
+
+    QCombobox:!editable
+    {
+        color:black;
+    }
+"""
+    
+
     def __init__(self, parent=None):
         super().__init__(parent)
+      
+        #self.setStyle(QStyleFactory.create("Fusion"))
+        self.setStyleSheet(Window.app_style)
         self.setWindowTitle("Solicitation Viewer")
-        self.resize(800, 450)
+        self.resize(900, 600)
         self.centralWidget = QWidget()
         self.setCentralWidget(self.centralWidget)
-        self.layout = QHBoxLayout()
+        self.layout = QVBoxLayout()
         self.centralWidget.setLayout(self.layout)
         self.solicitationModel = SolicitationModel()
         self.setupUI()
 
     def setupUI(self):
+        
         self.table = QTableView()
         self.table.setModel(self.solicitationModel.model)
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.table.resizeColumnsToContents()
+        self.table.horizontalHeader().setDefaultSectionSize(90)
+        self.table.horizontalHeader().stretchLastSection()
 
         self.addButton = QPushButton("Add Solicitation")
         self.addButton.clicked.connect(self.openAddDialog)
-        self.deleteButton = QPushButton("Delete Solicitation")
-        self.addButton.clicked.connect(self.deleteSolicitation)
 
-        layout = QVBoxLayout()
+        self.deleteButton = QPushButton("Delete Solicitation")
+        self.deleteButton.clicked.connect(self.deleteSolicitation)
+
+        layout = QHBoxLayout()
         layout.addWidget(self.addButton)
         layout.addWidget(self.deleteButton)
         layout.addStretch()
         
-        self.layout.addWidget(self.table)
         self.layout.addLayout(layout)
+        self.layout.addWidget(self.table)    
 
     def openAddDialog(self):
         dialog = AddDialog(self)
         if dialog.exec() == QDialog.Accepted:
             self.solicitationModel.addSolicitation(dialog.data)
-            self.table.resizeColumnsToContents()
+
     
     def deleteSolicitation(self):
         row = self.table.currentIndex().row()
@@ -86,8 +134,8 @@ class AddDialog(QDialog):
         self.nameField.setObjectName("Name")
         self.sbrField = QLineEdit()
         self.sbrField.setObjectName("SBR?")
-        self.submissionField = QLineEdit()
-        self.submissionField.setObjectName("Submission Method")
+        self.submissionField = QComboBox()
+        self.submissionField.addItems(["Email","Delivered","eMMA","SAM Website"])
         self.closingDateField = QLineEdit()
         self.closingDateField.setObjectName("Closing Date")
         self.placeDeliveryField = QLineEdit()
