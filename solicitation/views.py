@@ -178,12 +178,14 @@ class AddDialog(QDialog):
         self.layout.addWidget(self.buttonsBox)
 
     def accept(self):
+
+        selectedDropdown = QLineEdit(self.submissionField.currentText())
         self.data = []
         listOfFields = [
             self.idField,
             self.nameField,
             self.sbrField,
-            self.submissionField,
+            selectedDropdown,
             self.closingDateField,
             self.placeDeliveryField,
             self.timeDeliveryField,
